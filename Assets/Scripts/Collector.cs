@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
+    public Bullet bullet;
     public int type;
     public float[,] pos = { { 0, -2.034f }, { 0, 2f },{ 0, 2f }, { 0, 4f }, { 0, 2f }, { 0, 2f } };
     // Start is called before the first frame update
     bool collected = false;
+    float shotSpeed = 1;
+    bool startShot = false;
+    bool stopShot;
     void Start()
     {
         if (type == 0)
@@ -46,20 +50,28 @@ public class Collector : MonoBehaviour
                 }
                 
                 other.gameObject.GetComponent<Collector>().collect();
+
+                
+                    GetComponent<Collector>().stopShoot();
+                other.GetComponent<Collector>().startShoot();
+
+
+                /////parçaya özel type kontrolü yaparak ateþleme ayarlarý düzenlenecek
             }
            
         }
         if(other.gameObject.tag == "Saw")
         {
            
-            if (gameObject.
-                tag == "Gun")
+            if (gameObject.tag == "Gun")
             {
-                transform.position = Vector3.Lerp(transform.position,new Vector3(transform.position.x, transform.position.y, transform.position.z -1),5*Time.deltaTime);
+                
+                GetComponent<Gun>().SawCrash();
             }
             else
             {
-                transform.SetParent(transform);
+
+                Crash();
             }
         }
     }
@@ -76,4 +88,48 @@ public class Collector : MonoBehaviour
     {
         return collected;
     }
+    public void Crash()
+    {
+        ///her kutuya özel collider eklenerek parça parça kýrýlma eklenecek
+        transform.parent = null;
+    }
+    IEnumerator shooter()
+    {
+        
+        while (transform.position.z < 35)
+        {
+            
+                yield return new WaitForSeconds(shotSpeed / 3f);
+            if (!stopShot)
+            {
+                Bullet newBullet = Instantiate(bullet);
+                if (type == 0)
+                    newBullet.transform.position = transform.position + new Vector3(-0.15f, 0, .4f);
+                else
+                {
+                    newBullet.transform.position = transform.position + new Vector3(0, 0, .4f);
+                }
+            }
+           //bullet mezili ayarlanacak
+        }
+
+    }
+    public float getRate()
+    {
+        return shotSpeed;
+    }
+    public void setRate(float rate)
+    {
+        shotSpeed = rate;
+    }
+    public void stopShoot()
+    {
+        stopShot = true;
+        StopCoroutine(shooter());
+    }
+    public void startShoot()
+    {
+        StartCoroutine(shooter());
+    }
+
 }

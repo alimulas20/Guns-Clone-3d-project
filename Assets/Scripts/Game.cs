@@ -16,7 +16,7 @@ public class Game : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Instantiate(s_cube);
+        //Instantiate(s_cube);
     }
 
      void Update()

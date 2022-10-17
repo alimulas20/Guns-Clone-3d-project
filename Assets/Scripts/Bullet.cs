@@ -1,22 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-public class SingleCube : MonoBehaviour
+
+public class Bullet : MonoBehaviour
 {
+    float velocity = 5f;
     // Start is called before the first frame update
-    public TextMeshPro text;
-    bool collected=false;
-    Vector2 pos;
-   
     void Start()
-    {
-        pos = new Vector2(0, 0);
-    }
-    // Update is called once per frame
-    void Update()
     {
         
     }
-   
+
+    // Update is called once per frame
+    void Update()
+    {
+        transform.Translate(0, 0, Time.deltaTime * velocity);
+    }
+    public void inc( float mult)
+    {
+        velocity *= mult;
+    }
 }

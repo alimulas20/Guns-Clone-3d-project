@@ -91,14 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b9ed93e24d51c74cba2b502c4c9cfff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 5457410603187747347, guid: 6b40a508cc0c1974583e59ad5a4bf28d, type: 3}
   type: 5
-  pos:
-  - {x: 0, y: -1.04}
-  - {x: 0, y: 1}
-  - {x: 0, y: 1}
-  - {x: 0, y: 3}
-  - {x: 0, y: 1}
-  - {x: 0, y: 1}
 --- !u!1 &1350462656816005311
 GameObject:
   m_ObjectHideFlags: 0

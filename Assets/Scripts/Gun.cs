@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Gun : MonoBehaviour
 {
     // Start is called before the first frame update
+    public Bullet bullet;
     float velocity=-3f;
     bool start = false;
     bool left =false;
@@ -12,6 +14,7 @@ public class Gun : MonoBehaviour
     Vector2 pos = new Vector2(0, 0);
     Vector3 leftMax;
     Vector3 rigthMax;
+    bool wait = false;
     void Start()
     {
        
@@ -24,6 +27,9 @@ public class Gun : MonoBehaviour
         rigthMax = new Vector3(1, transform.position.y, transform.position.z);
         if (start || Input.GetMouseButton(0))
         {
+            if (!start)
+                GetComponent<Collector>().startShoot();
+            if(!wait)
             transform.Translate(0,0, Time.deltaTime * velocity);
             start = true;
             if (Input.touchCount > 0)
@@ -51,11 +57,26 @@ public class Gun : MonoBehaviour
                 }
             }
         }
-       
+        if (transform.position.z > 35)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
     public float getDistance()
     {
         return transform.position.z;
+    }
+    public void SawCrash()
+    {
+        if(!wait)
+        StartCoroutine(stoper());
+    }
+    IEnumerator stoper()
+    {
+        wait = true;
+        transform.position = Vector3.Lerp(transform.position, transform.position + new Vector3(0, 0, -3), Time.deltaTime*5 );
+        yield return new WaitForSeconds(1f);
+        wait = false;
     }
     
 }
